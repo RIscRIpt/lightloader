@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="scmanager">
+      <UniqueIdentifier>{6e8051b4-048f-4c33-8006-7193a06e7bb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="exceptions">
+      <UniqueIdentifier>{dea57b2f-4d4a-499c-8565-673881887c83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="application">
+      <UniqueIdentifier>{011cc063-197a-497f-80fb-283c92556b46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="driver">
+      <UniqueIdentifier>{84674379-9860-4bd9-b855-9aa1529f6a54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="service">
+      <UniqueIdentifier>{c0fc4305-f4fa-4f57-be06-eea31b8e28f6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="scmanager.hpp">
+      <Filter>scmanager</Filter>
+    </ClInclude>
+    <ClInclude Include="exceptions.hpp">
+      <Filter>exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="exit_codes.hpp" />
+    <ClInclude Include="application.hpp">
+      <Filter>application</Filter>
+    </ClInclude>
+    <ClInclude Include="driver.hpp">
+      <Filter>driver</Filter>
+    </ClInclude>
+    <ClInclude Include="service.hpp">
+      <Filter>service</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="scmanager.cpp">
+      <Filter>scmanager</Filter>
+    </ClCompile>
+    <ClCompile Include="exceptions.cpp">
+      <Filter>exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="application.cpp">
+      <Filter>application</Filter>
+    </ClCompile>
+    <ClCompile Include="driver.cpp">
+      <Filter>driver</Filter>
+    </ClCompile>
+    <ClCompile Include="service.cpp">
+      <Filter>service</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
