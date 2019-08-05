@@ -13,7 +13,7 @@
 
 Application::Application() {
     std::vector<wchar_t> raw_path(32768);
-    if (!GetModuleFileName(NULL, raw_path.data(), raw_path.size() - 1)) {
+    if (!GetModuleFileName(NULL, raw_path.data(), static_cast<DWORD>(raw_path.size() - 1))) {
         ex::throw_last_win32_error();
     }
     std::filesystem::path path(raw_path.data());
