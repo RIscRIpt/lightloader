@@ -27,7 +27,7 @@ int wmain() {
     }
 
     if (Application::owns_console()) {
-        std::cout << "Press any key to exit ...";
+        std::cout << "Press any key to exit ...\n";
         (void)_getch();
     }
 
