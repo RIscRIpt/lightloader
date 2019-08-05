@@ -34,6 +34,17 @@ int Application::run() {
     Driver driver(driver_path);
     Service service(sc_manager, driver);
 
+    if (service.is_loaded()) {
+        std::wcout << "Driver is loaded.\n";
+    } else {
+        std::wcout << "Driver is not loaded.\n";
+    }
+    std::wcout << "Press any key to toggle the driver state.\n"
+        << "Press `ESC` to exit.\n";
+    if (_getch() == 27) {
+        return 0;
+    }
+
     while (true) {
         if (service.is_loaded()) {
             std::wcout << "Unloading driver `" << driver.name() << "`.\n";
