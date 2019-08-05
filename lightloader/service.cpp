@@ -5,8 +5,6 @@
 #include "exceptions.hpp"
 
 Service::Service(SCManager const &sc_manager, Driver const &driver) {
-    std::wstringstream path;
-    path << std::quoted(driver.path().wstring(), L'"', L'^');
     handle_ = CreateService(
         sc_manager,
         driver.name().c_str(),
@@ -15,7 +13,7 @@ Service::Service(SCManager const &sc_manager, Driver const &driver) {
         SERVICE_KERNEL_DRIVER,
         SERVICE_DEMAND_START,
         SERVICE_ERROR_NORMAL,
-        path.str().c_str(),
+        driver.path().c_str(),
         NULL,
         NULL,
         NULL,
@@ -39,6 +37,9 @@ Service::Service(SCManager const &sc_manager, Driver const &driver) {
 
 Service::~Service() noexcept(false) {
     if (handle_) {
+        if (!DeleteService(handle_)) {
+            ex::throw_last_win32_error();
+        }
         if (!CloseServiceHandle(handle_)) {
             ex::throw_last_win32_error();
         }
