@@ -18,6 +18,7 @@ public:
     void load();
     void unload();
     void wait(std::function<bool(SERVICE_STATUS const &status)> continue_predicate);
+    void release();
 
 private:
     SC_HANDLE handle_;

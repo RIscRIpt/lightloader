@@ -148,3 +148,12 @@ void Service::wait(std::function<bool(SERVICE_STATUS const &status)> continue_pr
         }
     }
 }
+
+void Service::release() {
+    if (handle_) {
+        if (!CloseServiceHandle(handle_)) {
+            ex::throw_last_win32_error();
+        }
+        handle_ = NULL;
+    }
+}

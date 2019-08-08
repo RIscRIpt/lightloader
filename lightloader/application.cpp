@@ -41,11 +41,12 @@ int Application::run() {
     }
     std::wcout << "Press any key to toggle the driver state.\n"
         << "Press `ESC` to exit.\n";
-    if (_getch() == 27) {
-        return 0;
-    }
 
     while (true) {
+        if (_getch() == 27) {
+            break;
+        }
+        std::wcout << '\n';
         if (service.is_loaded()) {
             std::wcout << "Unloading driver `" << driver.name() << "`.\n";
             service.unload();
@@ -57,10 +58,10 @@ int Application::run() {
         }
         std::wcout << "Press any key to toggle the driver state.\n"
             << "Press `ESC` to exit.\n";
-        if (_getch() == 27) {
-            break;
-        }
-        std::wcout << '\n';
+    }
+
+    if (service.is_loaded()) {
+        service.release();
     }
 
     return 0;
