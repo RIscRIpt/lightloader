@@ -146,18 +146,18 @@
   <ItemGroup>
     <ClInclude Include="application.hpp" />
     <ClInclude Include="driver.hpp" />
-    <ClInclude Include="exceptions.hpp" />
     <ClInclude Include="exit_codes.hpp" />
     <ClInclude Include="scmanager.hpp" />
     <ClInclude Include="service.hpp" />
+    <ClInclude Include="win32_error.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="application.cpp" />
     <ClCompile Include="driver.cpp" />
-    <ClCompile Include="exceptions.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="scmanager.cpp" />
     <ClCompile Include="service.cpp" />
+    <ClCompile Include="win32_error.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

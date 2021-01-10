@@ -8,13 +8,13 @@
 
 #include "driver.hpp"
 #include "service.hpp"
-#include "exceptions.hpp"
+#include "win32_error.hpp"
 #include "exit_codes.hpp"
 
 Application::Application() {
     std::vector<wchar_t> raw_path(32768);
     if (!GetModuleFileName(NULL, raw_path.data(), static_cast<DWORD>(raw_path.size() - 1))) {
-        ex::throw_last_win32_error();
+        ThrowLastWin32Error();
     }
     std::filesystem::path path(raw_path.data());
     working_directory_ = path.parent_path();
