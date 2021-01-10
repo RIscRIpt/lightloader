@@ -20,7 +20,10 @@ Service::Service(SCManager const& sc_manager, Driver const& driver) {
 		NULL,
 		NULL
 	);
-	if (!handle_ && GetLastError() == ERROR_SERVICE_EXISTS) {
+	auto last_error = GetLastError();
+	if (!handle_ && last_error == ERROR_SERVICE_MARKED_FOR_DELETE) {
+	}
+	else if (!handle_ && last_error == ERROR_SERVICE_EXISTS) {
 		handle_ = OpenService(
 			sc_manager,
 			driver.name().c_str(),
@@ -37,8 +40,10 @@ Service::Service(SCManager const& sc_manager, Driver const& driver) {
 
 Service::~Service() noexcept(false) {
 	if (handle_) {
-		if (!DeleteService(handle_)) {
-			ThrowLastWin32Error();
+		if (can_delete()) {
+			if (!DeleteService(handle_)) {
+				ThrowLastWin32Error();
+			}
 		}
 		if (!CloseServiceHandle(handle_)) {
 			ThrowLastWin32Error();
@@ -60,7 +65,8 @@ DWORD Service::type() const {
 }
 
 bool Service::is_loaded() const {
-	switch (status().dwCurrentState) {
+	auto status = this->status();
+	switch (status.dwCurrentState) {
 	case SERVICE_RUNNING:
 	case SERVICE_START_PENDING:
 	case SERVICE_CONTINUE_PENDING:
@@ -70,6 +76,23 @@ bool Service::is_loaded() const {
 	case SERVICE_STOPPED:
 	case SERVICE_STOP_PENDING:
 		return false;
+	}
+	throw std::logic_error("Unexpected status.");
+}
+
+bool Service::can_delete() const
+{
+	auto status = this->status();
+	switch (status.dwCurrentState) {
+	case SERVICE_RUNNING:
+	case SERVICE_START_PENDING:
+	case SERVICE_CONTINUE_PENDING:
+	case SERVICE_PAUSED:
+	case SERVICE_PAUSE_PENDING:
+	case SERVICE_STOP_PENDING:
+		return false;
+	case SERVICE_STOPPED:
+		return true;
 	}
 	throw std::logic_error("Unexpected status.");
 }
@@ -104,9 +127,6 @@ void Service::load() {
 	case SERVICE_RUNNING:
 	case SERVICE_START_PENDING:
 	case SERVICE_CONTINUE_PENDING:
-		if (is_loaded()) {
-			release();
-		}
 		throw std::logic_error("Cannot load already loaded driver.");
 	}
 }
@@ -147,9 +167,6 @@ void Service::wait(std::function<bool(SERVICE_STATUS const& status)> continue_pr
 		}
 		else {
 			if (GetTickCount64() - start > s.dwWaitHint) {
-				if (is_loaded()) {
-					release();
-				}
 				throw std::runtime_error("wait timed out");
 			}
 		}

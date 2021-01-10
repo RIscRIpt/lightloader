@@ -15,6 +15,7 @@ public:
     SERVICE_STATUS status() const;
     DWORD type() const;
     bool is_loaded() const;
+    bool can_delete() const;
     void load();
     void unload();
     void wait(std::function<bool(SERVICE_STATUS const &status)> continue_predicate);

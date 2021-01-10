@@ -7,6 +7,7 @@
 
 #include "application.hpp"
 #include "exit_codes.hpp"
+#include "win32_error.hpp"
 
 int wmain() {
     std::ios::sync_with_stdio(false);
@@ -15,9 +16,9 @@ int wmain() {
 
     try {
         exit_code = Application().run();
-    } catch (std::system_error const &e) {
-        std::cerr << "System error #" << e.code().value() << ": " << e.what() << '\n';
-        exit_code = e.code().value();
+    } catch (Win32Error const &e) {
+		std::cerr << "System error #" << e.error << '\n';
+        exit_code = e.error;
     } catch (std::runtime_error const &e) {
         std::cerr << "Runtime error: " << e.what() << '\n';
         exit_code = ExitCode::RunTimeError;
